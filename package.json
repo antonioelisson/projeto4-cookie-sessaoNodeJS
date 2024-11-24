@@ -1,0 +1,25 @@
+{
+  "name": "projeto3validarformulariopid",
+  "version": "1.0.0",
+  "description": "Desenvolvimento do projeto 3 para validação de fomrulário do PID com NodeJS",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon index.js", 
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antonioelisson/projeto3ValidarFormularioPID.git"
+  },
+  "author": "Elisson Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antonioelisson/projeto3ValidarFormularioPID/issues"
+  },
+  "homepage": "https://github.com/antonioelisson/projeto3ValidarFormularioPID#readme",
+  "dependencies": {
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7"
+  }
+}
