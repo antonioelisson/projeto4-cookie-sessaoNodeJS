@@ -1,5 +1,7 @@
 import express from "express";
 import session from "express-session";
+import cookieParser from "cookie-parser";
+
 const app = express();
 
 app.use(express.urlencoded({ extendend: true }));
@@ -14,6 +16,7 @@ app.use(session({
         maxAge: 1000 * 60 * 30 //30 minutos
     }
 }));
+app.use(cookieParser());
 
 const porta = 3000;
 const host = "0.0.0.0";
@@ -21,6 +24,11 @@ const host = "0.0.0.0";
 var listaProdutos = [];
 
 function menu(req, resp) {
+    let dataHoraUltimoLogin = req.cookies['dataHoraUltimoLogin'];
+
+    if(!dataHoraUltimoLogin){
+        dataHoraUltimoLogin = '';
+    }
     resp.send(` <html lang="pt-br">
                         <head>
                             <meta charset="UTF-8">
@@ -32,18 +40,13 @@ function menu(req, resp) {
                             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                                 <div class="container-fluid">
                                     <a class="navbar-brand" href="#">MENU</a>
-                                    
-                                    <div class="collapse navbar-collapse" id="navbarNav">
-                                        <ul class="navbar-nav">
-                                            <li class="nav-item">
-                                                <a class="nav-link active" aria-current="page" href="/cadastrarProduto">Cadastrar Produto</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <a class="nav-link active" aria-current="page" href="/cadastrarProduto">Cadastrar Produto</a>
+                                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Seu último acesso foi realizado em ${dataHoraUltimoLogin}</a>
+                                    <a class="nav-link active" aria-current="page" href="/logout">Sair</a>
                                 </div>
                             </nav>                                                   
                         </body>
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> `);
+                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> `);
 }
 function formularioDoProduto(req, resp) {
     resp.send(` <html lang="pt-br">
@@ -122,6 +125,12 @@ function cadastrarProduto(req, resp) {
     const data_validade = req.body.data_validade; 
     const qtd_estoque = req.body.qtd_estoque; 
     const fabricante = req.body.fabricante; 
+
+    //recuperar informações dos cookies enviado pelo navegador
+    const dataHoraUltimoLogin = req.cookies['dataHoraUltimoLogin'];
+    if (!dataHoraUltimoLogin){
+        dataHoraUltimoLogin='';
+    }
 
     if (codigo_barras && descricao && preco_custo && preco_venda && data_validade && qtd_estoque && fabricante) {
         const produto = { codigo_barras, descricao, preco_custo, preco_venda, data_validade, qtd_estoque, fabricante };
@@ -282,7 +291,10 @@ function autenticarUsuario(req, resp){
         //criar uma sessão individualmente para cada usuário que faça o login
         req.session.usuarioLogado = true;
         //criar um cookie enviando para o navegador data e hora de acesso do usuário
-        //resp.cookie('dataHoraUltimoLogin', new Date().toLocaleString(), {maxAge: 1000 * 60 * 60 * 24 * 30, httpOnly: true});
+        resp.cookie('dataHoraUltimoLogin', new Date().toLocaleString(), 
+            {   maxAge: 1000 * 60 * 60 * 24 * 30, 
+                httpOnly: true
+            });
         resp.redirect('/');
     }
     else{
@@ -323,8 +335,12 @@ function verificarAutenticacao(req, resp, next){
 app.get('/login', (req, resp) =>{
     resp.redirect('/login.html');
 });
+app.get('/logout', (req, resp) => {
+    req.session.destroy(); //eliminar a sessão.
+    resp.redirect('/login.html');
+});
 app.post('/login', autenticarUsuario);
-app.get('/', menu);
+app.get('/', verificarAutenticacao, menu);
 app.get('/cadastrarProduto', verificarAutenticacao, formularioDoProduto);
 app.post('/cadastrarProduto', cadastrarProduto);
 app.listen(porta, host, () => {
