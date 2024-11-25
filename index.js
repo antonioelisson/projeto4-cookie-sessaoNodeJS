@@ -343,7 +343,7 @@ app.get('/logout', (req, resp) => {
     resp.redirect('/login.html');
 });
 app.post('/login', autenticarUsuario);
-app.get('/', verificarAutenticacao, menu);
+app.get('/', menu);
 app.get('/cadastrarProduto', verificarAutenticacao, formularioDoProduto);
 app.post('/cadastrarProduto', cadastrarProduto);
 app.listen(porta, host, () => {
