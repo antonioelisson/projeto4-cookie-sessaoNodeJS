@@ -1,6 +1,8 @@
-const express = require('express');
-const session = require ('express-session');
-//import cookieParser from "cookie-parser";
+import express from 'express';
+import session from 'express-session';
+import cookieParser from "cookie-parser";
+// const express = require('express');
+// const session = require('express-session');
 
 const app = express();
 
@@ -16,7 +18,7 @@ app.use(session({
         maxAge: 1000 * 60 * 30 //30 minutos
     }
 }));
-//app.use(cookieParser());
+app.use(cookieParser());
 
 const porta = 3000;
 const host = "0.0.0.0";
