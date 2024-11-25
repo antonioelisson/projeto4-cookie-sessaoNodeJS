@@ -1,5 +1,5 @@
 {
-  "name": "projeto3validarformulariopid",
+  "name": "projeto4",
   "version": "1.0.0",
   "description": "Desenvolvimento da atividade 4 para o cadastramento de produtos com validação de login usando cookie e sessão com express",
   "main": "index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antonioelisson/projeto3ValidarFormularioPID.git"
+    "url": "git+https://github.com/antonioelisson/projeto4-cookie-sessaoNodeJS.git"
   },
   "author": "Elisson Silva",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/antonioelisson/projeto3ValidarFormularioPID/issues"
+    "url": "https://github.com/antonioelisson/projeto4-cookie-sessaoNodeJS.git/issues"
   },
-  "homepage": "https://github.com/antonioelisson/projeto3ValidarFormularioPID#readme",
+  "homepage": "https://github.com/antonioelisson/projeto4-cookie-sessaoNodeJS.git#readme",
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "express": "^4.21.1",
