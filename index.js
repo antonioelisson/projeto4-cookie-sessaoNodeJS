@@ -2,13 +2,14 @@
 // import session from 'express-session';
 // import cookieParser from "cookie-parser";
 const express = require('express');
+const path = require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
 const app = express();
 
 app.use(express.urlencoded({ extendend: true }));
-app.use(express.static('./pages/public'));
+app.use(express.static(path.join('./pages/public')));
 app.use(session({
     secret: 'M1nh4Chav3S3cr3t4',
     resave: false,
@@ -322,9 +323,7 @@ function autenticarUsuario(req, resp){
                                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
                                 crossorigin="anonymous">
                         </script>
-                    </html>
-                  `
-        );
+                    </html>`);
     }
 }
 function verificarAutenticacao(req, resp, next){
@@ -343,9 +342,9 @@ app.get('/logout', (req, resp) => {
     resp.redirect('/login.html');
 });
 app.post('/login', autenticarUsuario);
-app.get('/', menu);
+app.get('/', verificarAutenticacao, menu);
 app.get('/cadastrarProduto', verificarAutenticacao, formularioDoProduto);
 app.post('/cadastrarProduto', cadastrarProduto);
 app.listen(porta, host, () => {
-    console.log(`Servidor iniciado e em execução no endereço http://${host}:${porta}`)
+    console.log(`Servidor iniciado e em execução no endereço http://${host}:${porta}`);
 });
