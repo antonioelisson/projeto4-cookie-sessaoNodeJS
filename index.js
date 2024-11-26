@@ -1,15 +1,12 @@
-// import express from 'express';
-// import session from 'express-session';
-// import cookieParser from "cookie-parser";
-const express = require('express');
-const path = require('path');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
+import express from 'express';
+import session from 'express-session';
+import cookieParser from "cookie-parser";
+import path from "path";
 
 const app = express();
 
 app.use(express.urlencoded({ extendend: true }));
-app.use(express.static(path.join('./pages/public')));
+app.use(express.static(path.join(process.cwd(), './pages/public')));
 app.use(session({
     secret: 'M1nh4Chav3S3cr3t4',
     resave: false,
